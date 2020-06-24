@@ -62,7 +62,19 @@ def create_file(structured_data):
     structured_data.to_excel(writer, sheet_name='dji')
     workbook = writer.book
     worksheet = writer.sheets['dji']
-    worksheet.conditional_format('C:C', {'type': '3_color_scale'})
+    # worksheet.conditional_format('C:C', {'type' : 'no_blanks'}) # doesn't work
+
+    # Add a format. Light red fill with dark red text.
+    format1 = workbook.add_format({'bg_color': '#FFC7CE','font_color': '#9C0006'})
+
+    # Add a format. Green fill with dark green text.
+    format2 = workbook.add_format({'bg_color': '#C6EFCE','font_color': '#006100'})
+
+    worksheet.conditional_format('C3:G8924', {'type': 'cell','criteria': '<','value': 0,'format': format1})
+
+    # Write another conditional format over the same range.
+    worksheet.conditional_format('C3:G8924', {'type': 'cell','criteria': '>','value': 0,'format': format2})
+
     writer.save()
 
 
