@@ -5,12 +5,20 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import yfinance as yf
 import xlsxwriter
+import pkg_resources.py2_warn
 
 
 def main():
-    market_data = get_market_info()
+    print('--------------------------------------------------------------')
+    print('                      STOCK ANALYSIS ')
+    print('--------------------------------------------------------------')
+    market_data, symbol = get_market_info()
     structured_data, row_count = structure_market_data(market_data)
-    create_file(structured_data, row_count)
+    create_file(structured_data, row_count, symbol)
+    print('Congratulations!  Your results are saved to an Excel file titled: "Analysis.xlsx"')
+    print('--------------------------------------------------------------')
+    print('                     ANALYSIS COMPLETE ')
+    print('--------------------------------------------------------------')
 
 
 def get_market_info():
@@ -19,7 +27,7 @@ def get_market_info():
     tick = yf.Ticker(f'{symbol}')
     tick = tick.history(period='max')    
 
-    return tick
+    return tick, symbol
 
 def structure_market_data(market_data):
 
@@ -57,13 +65,13 @@ def structure_market_data(market_data):
     return structured_data, row_count
 
 
-def create_file(structured_data, row_count):
+def create_file(structured_data, row_count, symbol):
 
     row_count += 1
     writer = pd.ExcelWriter('analysis.xlsx', engine='xlsxwriter')
-    structured_data.to_excel(writer, sheet_name='analysis')
+    structured_data.to_excel(writer, sheet_name=f'{symbol}')
     workbook = writer.book
-    worksheet = writer.sheets['analysis']
+    worksheet = writer.sheets[f'{symbol}']
     # worksheet.conditional_format('C:C', {'type' : 'no_blanks'}) # doesn't work
 
     # Add a format. Light red fill with dark red text.

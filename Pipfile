@@ -10,8 +10,8 @@ pandas = "*"
 matplotlib = "*"
 openpyxl = "*"
 yfinance = "*"
-xslxwriter = "*"
 xlsxwriter = "*"
+pyinstaller = "*"
 
 [requires]
 python_version = "3.7"
